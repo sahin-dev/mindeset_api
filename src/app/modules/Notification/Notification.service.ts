@@ -80,19 +80,23 @@ const sendNotificationToMultipleUsers = async (userId:string, payload:{title:str
       return null
     }
     }))
-  
+ 
 
 
 
   let tokenizedUsers = users.filter( user => user != null)
 
   let tokens = tokenizedUsers.map((user:any) => user.fcmToken);
+
   
     const message = {
       notification: {
         title:payload.title,
         body:payload.body,
-        author:payload.author
+       
+      },
+      data:{
+         author:payload.author
       },
       tokens,
     };
@@ -100,6 +104,8 @@ const sendNotificationToMultipleUsers = async (userId:string, payload:{title:str
      const response = await admin
       .messaging()
       .sendEachForMulticast(message as any);
+
+      console.log(response.responses[0].error)
  
     const successfulTokens = response.responses
       .map((res: any, idx: number) => (res.success ? idx : null))
@@ -171,12 +177,12 @@ const sendNotifications = async (req: any) => {
     }
 
     const fcmTokens = users.map((user:any) => user.fcmToken);
+    console.log(author)
 
     const message = {
       notification: {
         title,
-        body,
-        author
+        body
       },
       tokens: fcmTokens,
     };

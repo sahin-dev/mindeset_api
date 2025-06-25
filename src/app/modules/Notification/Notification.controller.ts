@@ -55,6 +55,8 @@ const getSingleNotificationById = catchAsync(async (req: any, res: any) => {
 const sendNotificationToMultipleUsers = catchAsync(async (req:any, res:any)=>{
   const userId = req.user.id
   const body = req.body
+
+  console.log(body)
   const result = await notificationServices.sendNotificationToMultipleUsers(userId,body)
   
   sendResponse(res, {
